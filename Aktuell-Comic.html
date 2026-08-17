@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FERIENWOCHE CHRONICLES</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3ECD8;
+    --paper-dark:#E6DABA;
+    --ink:#171310;
+    --hero-blue:#1E44C4;
+    --hero-blue-dark:#122C82;
+    --power-yellow:#FFC93C;
+    --action-red:#E8382B;
+    --low-navy:#37415A;
+    --low-grey:#B7BCC9;
+    --white:#FFFCF3;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+
+  body{
+    background-color:var(--paper);
+    background-image:
+      radial-gradient(circle, rgba(23,19,16,0.09) 1px, transparent 1.6px);
+    background-size:11px 11px;
+    color:var(--ink);
+    font-family:'Comic Neue', cursive, sans-serif;
+    min-height:100vh;
+    padding:20px 14px 60px;
+  }
+
+  @media(min-width:700px){ body{ padding:32px 40px 70px; } }
+
+  .display{ font-family:'Bangers', cursive; letter-spacing:1px; }
+
+  /* ---------- HEADER ---------- */
+  header.masthead{
+    max-width:1080px;
+    margin:0 auto 26px;
+    background:var(--hero-blue);
+    background-image:linear-gradient(135deg, var(--hero-blue) 55%, var(--hero-blue-dark) 100%);
+    border:4px solid var(--ink);
+    border-radius:10px;
+    box-shadow:8px 8px 0 var(--ink);
+    padding:22px 22px 18px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    flex-wrap:wrap;
+    position:relative;
+    overflow:hidden;
+  }
+  header.masthead::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:radial-gradient(circle, rgba(255,255,255,0.12) 1.5px, transparent 1.6px);
+    background-size:14px 14px;
+    pointer-events:none;
+  }
+  .mascot{ flex:0 0 auto; width:84px; height:104px; filter:drop-shadow(3px 3px 0 rgba(0,0,0,0.35)); }
+  .masthead-text{ flex:1 1 260px; z-index:1; }
+  h1.title{
+    color:var(--power-yellow);
+    -webkit-text-stroke:2px var(--ink);
+    text-shadow:3px 3px 0 var(--ink);
+    font-size:clamp(2.1rem, 6vw, 3.4rem);
+    margin:0 0 2px;
+    line-height:0.95;
+  }
+  .subtitle{ color:var(--white); font-weight:700; font-size:1.05rem; margin:0; }
+  .protokoll-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:14px;
+    margin-bottom:14px;
+  }
+  .protokoll-head .section-title{ margin-bottom:0; }
+
+  .stat-bubble{
+    background:var(--paper-dark);
+    border:3px solid var(--ink);
+    border-radius:50% 50% 50% 4px;
+    padding:12px 16px;
+    font-family:'Bangers', cursive;
+    font-size:1rem;
+    line-height:1.25;
+    text-align:center;
+    min-width:150px;
+    box-shadow:4px 4px 0 var(--ink);
+  }
+  .stat-bubble b{ display:block; font-size:1.35rem; }
+  .stat-bubble .sy{ color:var(--action-red); }
+  .stat-bubble .sn{ color:var(--low-navy); }
+
+  main{ max-width:1080px; margin:0 auto; display:flex; flex-direction:column; gap:26px; }
+
+  section.panel-block{
+    background:var(--white);
+    border:4px solid var(--ink);
+    border-radius:10px;
+    box-shadow:7px 7px 0 var(--ink);
+    padding:20px;
+  }
+
+  h2.section-title{
+    font-size:1.7rem;
+    margin:0 0 14px;
+    display:inline-block;
+    background:var(--power-yellow);
+    border:3px solid var(--ink);
+    padding:2px 14px;
+    border-radius:6px;
+    transform:rotate(-1.5deg);
+    box-shadow:3px 3px 0 var(--ink);
+  }
+
+  /* ---------- FORM ---------- */
+  form{ display:grid; gap:14px; }
+  .field{ display:flex; flex-direction:column; gap:5px; }
+  label{ font-weight:700; font-size:0.95rem; }
+  input[type="date"], input[type="text"], textarea{
+    font-family:'Comic Neue', cursive;
+    font-size:1rem;
+    border:3px solid var(--ink);
+    border-radius:6px;
+    padding:9px 10px;
+    background:var(--paper);
+    color:var(--ink);
+  }
+  textarea{ resize:vertical; min-height:64px; }
+  input:focus, textarea:focus, button:focus-visible{
+    outline:3px solid var(--hero-blue);
+    outline-offset:1px;
+  }
+
+  .type-toggle{ display:flex; gap:12px; flex-wrap:wrap; }
+  .type-btn{
+    flex:1 1 160px;
+    cursor:pointer;
+    font-family:'Bangers', cursive;
+    font-size:1.15rem;
+    letter-spacing:0.5px;
+    border:3px solid var(--ink);
+    border-radius:8px;
+    padding:12px 10px;
+    background:var(--paper-dark);
+    color:var(--ink);
+    box-shadow:4px 4px 0 var(--ink);
+    transition:transform 0.08s ease;
+  }
+  .type-btn:active{ transform:translate(2px,2px); box-shadow:2px 2px 0 var(--ink); }
+  .type-btn[aria-pressed="true"].hl{ background:var(--power-yellow); }
+  .type-btn[aria-pressed="true"].ll{ background:var(--low-grey); }
+
+  .power-picker{ display:flex; gap:6px; }
+  .bolt-btn{
+    cursor:pointer;
+    font-size:1.4rem;
+    background:var(--paper);
+    border:3px solid var(--ink);
+    border-radius:6px;
+    width:44px; height:44px;
+    line-height:1;
+    filter:grayscale(1) opacity(0.55);
+  }
+  .bolt-btn.active{ filter:none; background:var(--power-yellow); }
+
+  .submit-btn{
+    justify-self:start;
+    font-family:'Bangers', cursive;
+    font-size:1.3rem;
+    letter-spacing:1px;
+    background:var(--action-red);
+    color:var(--white);
+    border:3px solid var(--ink);
+    border-radius:8px;
+    padding:11px 26px;
+    cursor:pointer;
+    box-shadow:5px 5px 0 var(--ink);
+    transition:transform 0.08s ease;
+  }
+  .submit-btn:active{ transform:translate(3px,3px); box-shadow:2px 2px 0 var(--ink); }
+
+  /* ---------- SORT CONTROLS ---------- */
+  .sort-row{ display:flex; gap:10px; flex-wrap:wrap; }
+  .sort-btn{
+    font-family:'Comic Neue', cursive;
+    font-weight:700;
+    font-size:0.95rem;
+    border:3px solid var(--ink);
+    border-radius:20px;
+    padding:8px 16px;
+    background:var(--paper-dark);
+    cursor:pointer;
+  }
+  .sort-btn[aria-pressed="true"]{ background:var(--hero-blue); color:var(--white); }
+
+  /* ---------- TIMELINE ---------- */
+  .day-group{ margin-bottom:24px; }
+  .day-group:last-child{ margin-bottom:0; }
+  .day-ribbon{
+    display:inline-block;
+    font-family:'Bangers', cursive;
+    font-size:1.25rem;
+    background:var(--ink);
+    color:var(--power-yellow);
+    padding:5px 16px;
+    border-radius:4px;
+    transform:rotate(-1deg);
+    margin-bottom:12px;
+  }
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
+    gap:18px;
+  }
+
+  .card{
+    position:relative;
+    border:3px solid var(--ink);
+    border-radius:8px;
+    padding:16px 14px 14px;
+    box-shadow:6px 6px 0 var(--ink);
+    animation:pop 0.28s ease-out;
+  }
+  @keyframes pop{ from{ transform:scale(0.85); opacity:0; } to{ transform:scale(1); opacity:1; } }
+
+  .card.highlight{
+    background:linear-gradient(160deg, #FFE178 0%, var(--power-yellow) 60%);
+    transform:rotate(-1.1deg);
+  }
+  .card.lowlight{
+    background:linear-gradient(160deg, #C7CCDA 0%, var(--low-grey) 60%);
+    transform:rotate(1deg);
+  }
+
+  .badge{
+    position:absolute; top:-16px; right:-10px;
+    font-family:'Bangers', cursive;
+    font-size:0.95rem;
+    padding:10px 6px 6px;
+    width:64px; height:56px;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center;
+    transform:rotate(8deg);
+  }
+  .badge.hl{
+    background:var(--action-red); color:var(--white);
+    clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+  }
+  .badge.ll{
+    background:var(--low-navy); color:var(--white);
+    clip-path:polygon(50% 0%, 85% 15%, 100% 55%, 75% 100%, 25% 95%, 0% 50%, 15% 10%);
+  }
+
+  .card h3{ margin:6px 0 6px; font-family:'Bangers', cursive; font-size:1.25rem; letter-spacing:0.4px; padding-right:34px; }
+  .card p{ margin:0 0 10px; font-size:0.97rem; line-height:1.4; }
+  .card-foot{ display:flex; align-items:center; justify-content:space-between; }
+  .power-display{ font-size:1.05rem; letter-spacing:1px; }
+  .power-display .dim{ opacity:0.25; }
+
+  .del-btn{
+    border:2px solid var(--ink);
+    background:var(--white);
+    border-radius:5px;
+    width:26px; height:26px;
+    font-weight:700;
+    cursor:pointer;
+    line-height:1;
+  }
+  .del-btn:hover{ background:var(--action-red); color:var(--white); }
+
+  .empty-state{
+    text-align:center;
+    padding:26px 10px;
+    font-family:'Bangers', cursive;
+    font-size:1.3rem;
+    color:var(--low-navy);
+  }
+
+  footer{
+    max-width:1080px; margin:26px auto 0; text-align:center;
+    font-size:0.85rem; color:var(--low-navy); opacity:0.75;
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <svg class="mascot" viewBox="0 0 90 110" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <polygon points="49,2 12,58 38,58 24,108 82,46 52,46" fill="#FFC93C" stroke="#171310" stroke-width="4" stroke-linejoin="round"/>
+  </svg>
+  <div class="masthead-text">
+    <h1 class="title display">FERIENWOCHE<br>CHRONICLES</h1>
+    <p class="subtitle">Das offizielle Einsatzprotokoll deiner Urlaubswoche</p>
+  </div>
+</header>
+
+<main>
+  <section class="panel-block">
+    <h2 class="section-title display">Neuer Einsatzbericht</h2>
+    <form id="entryForm">
+      <div class="field">
+        <label for="dayInput">Tag des Geschehens</label>
+        <input type="date" id="dayInput" required>
+      </div>
+
+      <div class="field">
+        <label>Art des Ereignisses</label>
+        <div class="type-toggle">
+          <button type="button" class="type-btn hl" id="btnHighlight" aria-pressed="true">⚡ HIGHLIGHT</button>
+          <button type="button" class="type-btn ll" id="btnLowlight" aria-pressed="false">🌩 LOWLIGHT</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="titleInput">Titel der Szene</label>
+        <input type="text" id="titleInput" maxlength="60" placeholder="z.B. Der Sturm am Strand" required>
+      </div>
+
+      <div class="field">
+        <label for="descInput">Was ist passiert?</label>
+        <textarea id="descInput" maxlength="300" placeholder="Erzähl die Geschichte..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Power-Level (Intensität)</label>
+        <div class="power-picker" id="powerPicker">
+          <button type="button" class="bolt-btn" data-val="1">⚡</button>
+          <button type="button" class="bolt-btn" data-val="2">⚡</button>
+          <button type="button" class="bolt-btn active" data-val="3">⚡</button>
+          <button type="button" class="bolt-btn" data-val="4">⚡</button>
+          <button type="button" class="bolt-btn" data-val="5">⚡</button>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn display">EINTRAGEN!</button>
+    </form>
+  </section>
+
+  <section class="panel-block">
+    <h2 class="section-title display">Sortierung</h2>
+    <div class="sort-row" id="sortRow">
+      <button class="sort-btn" data-mode="day" aria-pressed="true">📅 Nach Tag</button>
+      <button class="sort-btn" data-mode="power" aria-pressed="false">💥 Nach Power-Level</button>
+      <button class="sort-btn" data-mode="highlights" aria-pressed="false">⚡ Nur Highlights</button>
+      <button class="sort-btn" data-mode="lowlights" aria-pressed="false">🌩 Nur Lowlights</button>
+    </div>
+  </section>
+
+  <section class="panel-block">
+    <div class="protokoll-head">
+      <h2 class="section-title display">Das Protokoll</h2>
+      <div class="stat-bubble" id="statBubble">
+        <b><span class="sy" id="hlCount">0</span> / <span class="sn" id="llCount">0</span></b>
+        Highlights / Lowlights
+      </div>
+    </div>
+    <div id="timeline"></div>
+  </section>
+</main>
+
+<footer>Deine Einträge werden automatisch gespeichert &amp; sortiert.</footer>
+
+<script>
+(function(){
+  const STORAGE_KEY = 'ferien-tagebuch:entries';
+  let entries = [];
+  let sortMode = 'day';
+  let selectedType = 'highlight';
+  let selectedPower = 3;
+
+  const form = document.getElementById('entryForm');
+  const dayInput = document.getElementById('dayInput');
+  const titleInput = document.getElementById('titleInput');
+  const descInput = document.getElementById('descInput');
+  const btnHighlight = document.getElementById('btnHighlight');
+  const btnLowlight = document.getElementById('btnLowlight');
+  const powerPicker = document.getElementById('powerPicker');
+  const sortRow = document.getElementById('sortRow');
+  const timeline = document.getElementById('timeline');
+  const hlCountEl = document.getElementById('hlCount');
+  const llCountEl = document.getElementById('llCount');
+
+  function setType(type){
+    selectedType = type;
+    btnHighlight.setAttribute('aria-pressed', String(type === 'highlight'));
+    btnLowlight.setAttribute('aria-pressed', String(type === 'lowlight'));
+  }
+  btnHighlight.addEventListener('click', () => setType('highlight'));
+  btnLowlight.addEventListener('click', () => setType('lowlight'));
+
+  powerPicker.addEventListener('click', (e) => {
+    const btn = e.target.closest('.bolt-btn');
+    if(!btn) return;
+    selectedPower = parseInt(btn.dataset.val, 10);
+    [...powerPicker.children].forEach(b => b.classList.toggle('active', parseInt(b.dataset.val,10) <= selectedPower));
+  });
+
+  sortRow.addEventListener('click', (e) => {
+    const btn = e.target.closest('.sort-btn');
+    if(!btn) return;
+    sortMode = btn.dataset.mode;
+    [...sortRow.children].forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+    render();
+  });
+
+  async function loadEntries(){
+    try{
+      const res = await window.storage.get(STORAGE_KEY, false);
+      entries = res && res.value ? JSON.parse(res.value) : [];
+    }catch(err){
+      entries = [];
+    }
+  }
+
+  async function saveEntries(){
+    try{
+      await window.storage.set(STORAGE_KEY, JSON.stringify(entries), false);
+    }catch(err){
+      console.error('Speichern fehlgeschlagen', err);
+    }
+  }
+
+  function fmtDay(dateStr){
+    const d = new Date(dateStr + 'T00:00:00');
+    return d.toLocaleDateString('de-DE', { weekday:'long', day:'2-digit', month:'long' });
+  }
+
+  function groupByDay(list){
+    const map = new Map();
+    list.forEach(e => {
+      if(!map.has(e.day)) map.set(e.day, []);
+      map.get(e.day).push(e);
+    });
+    return [...map.entries()].sort((a,b) => a[0].localeCompare(b[0]));
+  }
+
+  function powerBolts(power){
+    let out = '';
+    for(let i=1;i<=5;i++){
+      out += `<span class="${i<=power ? '' : 'dim'}">⚡</span>`;
+    }
+    return out;
+  }
+
+  function cardHTML(e){
+    const isHl = e.type === 'highlight';
+    return `
+      <article class="card ${isHl ? 'highlight' : 'lowlight'}">
+        <span class="badge ${isHl ? 'hl' : 'll'} display">${isHl ? 'POW!' : 'OOF...'}</span>
+        <h3></h3>
+        <p></p>
+        <div class="card-foot">
+          <span class="power-display">${powerBolts(e.power)}</span>
+          <button class="del-btn" data-id="${e.id}" aria-label="Eintrag löschen">✕</button>
+        </div>
+      </article>`;
+  }
+
+  function render(){
+    let list = entries.slice();
+
+    if(sortMode === 'highlights') list = list.filter(e => e.type === 'highlight');
+    if(sortMode === 'lowlights') list = list.filter(e => e.type === 'lowlight');
+
+    timeline.innerHTML = '';
+
+    if(list.length === 0){
+      timeline.innerHTML = '<div class="empty-state">Noch keine Abenteuer aufgezeichnet. Zeit für den ersten Einsatzbericht! 🦸</div>';
+      updateStats();
+      return;
+    }
+
+    if(sortMode === 'power'){
+      const sorted = list.slice().sort((a,b) => b.power - a.power || a.day.localeCompare(b.day));
+      const wrap = document.createElement('div');
+      wrap.className = 'day-group';
+      const ribbon = document.createElement('div');
+      ribbon.className = 'day-ribbon display';
+      ribbon.textContent = 'Ranking: Stärkste Momente zuerst';
+      wrap.appendChild(ribbon);
+      const cards = document.createElement('div');
+      cards.className = 'cards';
+      sorted.forEach(e => cards.appendChild(buildCard(e)));
+      wrap.appendChild(cards);
+      timeline.appendChild(wrap);
+      updateStats();
+      return;
+    }
+
+    const groups = groupByDay(list);
+    groups.forEach(([day, items], idx) => {
+      const sortedItems = items.slice().sort((a,b) => {
+        if(a.type !== b.type) return a.type === 'highlight' ? -1 : 1;
+        return b.power - a.power;
+      });
+      const wrap = document.createElement('div');
+      wrap.className = 'day-group';
+      const ribbon = document.createElement('div');
+      ribbon.className = 'day-ribbon display';
+      ribbon.textContent = `Tag ${idx+1} – ${fmtDay(day)}`;
+      wrap.appendChild(ribbon);
+      const cards = document.createElement('div');
+      cards.className = 'cards';
+      sortedItems.forEach(e => cards.appendChild(buildCard(e)));
+      wrap.appendChild(cards);
+      timeline.appendChild(wrap);
+    });
+
+    updateStats();
+  }
+
+  function buildCard(e){
+    const tpl = document.createElement('template');
+    tpl.innerHTML = cardHTML(e).trim();
+    const node = tpl.content.firstChild;
+    node.querySelector('h3').textContent = e.title;
+    node.querySelector('p').textContent = e.desc || '';
+    node.querySelector('.del-btn').addEventListener('click', () => deleteEntry(e.id));
+    return node;
+  }
+
+  function updateStats(){
+    hlCountEl.textContent = entries.filter(e => e.type === 'highlight').length;
+    llCountEl.textContent = entries.filter(e => e.type === 'lowlight').length;
+  }
+
+  async function deleteEntry(id){
+    entries = entries.filter(e => e.id !== id);
+    await saveEntries();
+    render();
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if(!dayInput.value || !titleInput.value.trim()) return;
+    const entry = {
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2,7),
+      day: dayInput.value,
+      type: selectedType,
+      title: titleInput.value.trim(),
+      desc: descInput.value.trim(),
+      power: selectedPower
+    };
+    entries.push(entry);
+    await saveEntries();
+    titleInput.value = '';
+    descInput.value = '';
+    render();
+  });
+
+  (async function init(){
+    await loadEntries();
+    render();
+  })();
+})();
+</script>
+</body>
+</html>
