@@ -1,3 +1,3 @@
-Hello World 
-This is the new webside of KATHI!
-BTW: Sign up!
+Hi!
+Das ist die neue Webside von Kathi!
+Bitte alles durchlesen.
