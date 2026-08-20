@@ -565,3 +565,17 @@
 </script>
 </body>
 </html>
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+    const saved = localStorage.getItem("tagebuchEintrag");
+    if (saved) {
+        document.getElementById("descInput").value = saved;
+    }
+});
+
+document.getElementById("descInput").addEventListener("input", () => {
+    const text = document.getElementById("descInput").value;
+    localStorage.setItem("tagebuchEintrag", text);
+});
+</script>
+
